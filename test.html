@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    select a ttf file:<input type="file" name="" id="ttfinput" /><br />
+    select a ttc file:<input type="file" name="" id="ttcinput" />
+    <script src="./index.js"></script>
+    <script>
+      ttfinput.onchange = async function(e) {
+        const blob = e.target.files[0];
+        const buffer = await blob.arrayBuffer();
+        console.log(new TTFReader(buffer).getAttrs());
+      };
+      ttcinput.onchange = async function(e) {
+        const blob = e.target.files[0];
+        const buffer = await blob.arrayBuffer();
+        console.log(new TTCReader(buffer).getAttrs());
+      };
+    </script>
+  </body>
+</html>
