@@ -13,7 +13,7 @@ class DataReader {
     this.typeArray = new Uint8Array(buffer);
   }
 
-  readAsDataChunk(length) {
+  readAsDataChunk(length = 0) {
     const chunk = this.typeArray.slice(this.index, (this.index += length));
     return this.constructor.read(chunk.buffer);
   }
@@ -64,6 +64,9 @@ class DataReader {
   tell() {
     return this.index;
   }
+  get length() {
+    return this.typeArray.length;
+  }
 }
 
 class TTCReader {
@@ -75,7 +78,7 @@ class TTCReader {
     const uNumFonts = this.readFileHeader(headerChunk);
     for (let i = 0; i < uNumFonts; i++) {
       let baseOffset = this.reader.readAsULong();
-      const ttr = new TTFRead(arrayBuffer, baseOffset);
+      const ttr = new TTFReader(arrayBuffer, baseOffset);
       this.attrs.push(ttr.getAttrs());
     }
   }
@@ -187,3 +190,5 @@ class TTFReader {
     return this.attrs;
   }
 }
+
+export default { DataReader, TTFReader, TTCReader };

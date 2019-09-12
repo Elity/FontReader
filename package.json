@@ -8,10 +8,15 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha",
-    "pre": "puer"
+    "pre": "puer",
+    "build": "rollup -c"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
     "mocha": "^6.2.0",
-    "per": "^2.0.2"
+    "rollup": "^1.21.2",
+    "rollup-plugin-babel": "^4.3.3"
   }
 }

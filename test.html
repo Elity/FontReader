@@ -9,17 +9,17 @@
   <body>
     select a ttf file:<input type="file" name="" id="ttfinput" /><br />
     select a ttc file:<input type="file" name="" id="ttcinput" />
-    <script src="./index.js"></script>
+    <script src="./bundle.js"></script>
     <script>
       ttfinput.onchange = async function(e) {
         const blob = e.target.files[0];
         const buffer = await blob.arrayBuffer();
-        console.log(new TTFReader(buffer).getAttrs());
+        console.log(new FontReader.TTFReader(buffer).getAttrs());
       };
       ttcinput.onchange = async function(e) {
         const blob = e.target.files[0];
         const buffer = await blob.arrayBuffer();
-        console.log(new TTCReader(buffer).getAttrs());
+        console.log(new FontReader.TTCReader(buffer).getAttrs());
       };
     </script>
   </body>
