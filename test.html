@@ -8,18 +8,25 @@
   </head>
   <body>
     select a ttf file:<input type="file" name="" id="ttfinput" /><br />
-    select a ttc file:<input type="file" name="" id="ttcinput" />
+    select a ttc file:<input type="file" name="" id="ttcinput" /><br />
+    <pre id="info"></pre>
     <script src="./bundle.js"></script>
     <script>
+      function echo(obj) {
+        const str = JSON.stringify(obj, null, 2);
+        info.innerHTML = str;
+      }
       ttfinput.onchange = async function(e) {
         const blob = e.target.files[0];
         const buffer = await blob.arrayBuffer();
-        console.log(new FontReader.TTFReader(buffer).getAttrs());
+        const info = new FontReader.TTFReader(buffer).getAttrs();
+        echo(info);
       };
       ttcinput.onchange = async function(e) {
         const blob = e.target.files[0];
         const buffer = await blob.arrayBuffer();
-        console.log(new FontReader.TTCReader(buffer).getAttrs());
+        const info = new FontReader.TTCReader(buffer).getAttrs();
+        echo(info);
       };
     </script>
   </body>
