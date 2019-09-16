@@ -294,26 +294,40 @@
     }, {
       key: "readNameeRecord",
       value: function readNameeRecord(chunk, recordOffset) {
-        chunk.skip(2); // 不读取 跳过uPlatformID
-
-        var uEncodingID = chunk.readAsUShort(); // uEncodingID  0：ASCII编码  1：utf16编码
-
+        var uPlatformID = chunk.readAsUShort();
+        var uEncodingID = chunk.readAsUShort();
         chunk.skip(2); // 不读取 跳过uLanguageID
 
         var uNameID = chunk.readAsUShort();
         var uStringLength = chunk.readAsUShort();
         var uStringOffset = chunk.readAsUShort();
 
-        if (uNameID > 7 || uStringLength <= 0 || uEncodingID === 0) {
+        if (uNameID > 7 || uStringLength <= 0) {
           return;
         }
+        /**
+         * 依据 https://docs.microsoft.com/en-us/typography/opentype/spec/name
+         * Platform ID 与 Encoding ID 对应关系
+         *  platformID  platforName    encodingId=0     encodingId=1     encodingId=2   encodingId=3
+         *  0           Unicode        Unicode 1.0      Unicode 1.1      ISO/IEC 10646   Unicode 2.0
+         *  1           Macintosh      Roman            Japanese         Chinese         Korean
+         *  2           ISO(弃用)       -                 -
+         *  3：         Windows        Symbol           Unicode BMP      ShiftJIS        PRC
+         *  4           Custom         -                 -               -               -
+         * }
+         *
+         * 我们只考虑unicode的形式，也就是
+         * platformID = 0   Encoding ID = (0,1,3)
+         * platformID = 3   Encoding ID = 1
+         * 两种情况
+         */
 
+
+        if ([0, 3].indexOf(uPlatformID) === -1) return;
+        if (uPlatformID === 0 && [0, 1, 3].indexOf(uEncodingID) === -1) return;
+        if (uPlatformID === 3 && uEncodingID !== 1) return;
         var strVal = this.reader.readAsStringFrom(recordOffset + uStringOffset, uStringLength, true);
-
-        if (!strVal.trim()) {
-          return;
-        }
-
+        if (!strVal.trim()) return;
         var attrName = this.attrsMap[uNameID];
         this.setAttr(attrName, strVal);
       }
