@@ -2,7 +2,7 @@
   "name": "font-reader",
   "version": "1.0.0",
   "description": "read font information from ttf/ttc file for browser",
-  "main": "index.js",
+  "main": "bundle.js",
   "repository": "https://github.com/Elity/FontReader",
   "author": "Fighting",
   "license": "MIT",
