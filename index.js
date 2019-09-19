@@ -100,6 +100,8 @@ class TTCReader {
 }
 
 class TTFReader {
+  // Name IDs 代表的意义
+  // 详细解释及更多id参考 https://docs.microsoft.com/en-us/typography/opentype/spec/name#name-ids
   attrsMap = {
     0: 'copyright',
     1: 'fontFamily',
